@@ -104,6 +104,8 @@ class MonopolyGame:
             # Check bankruptcy
             if player.money < 0:
                 player.bankrupt = True
+                # Stop the game immediately when a player goes bankrupt
+                break
 
             self._next_turn()
 
