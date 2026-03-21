@@ -1,4 +1,5 @@
 from game_engine import MonopolyGame
+from models import Player
 from utils import load_json
 
 def test_game_1_results():
@@ -33,3 +34,26 @@ def test_game_2_results():
     assert players["Billy"]["money"] == 20
     assert players["Charlotte"]["money"] == 31
     assert players["Sweedal"]["money"] == -2
+
+def test_player_move_wraparound_and_passed_go_boundaries():
+    """Covers wraparound + `passed_go` boundary conditions in `Player.move()`."""
+    board_size = 5
+    p = Player("A")
+
+    # Wrap around: 4 + 1 => 0, and should count as passing GO
+    p.position = 4
+    passed_go = p.move(1, board_size)
+    assert passed_go is True
+    assert p.position == 0
+
+    # Exact multiple: 0 + 5 => 0, should count as passing GO
+    p.position = 0
+    passed_go = p.move(5, board_size)
+    assert passed_go is True
+    assert p.position == 0
+
+    # Not passing: 0 + 4 => 4, should not count as passing GO
+    p.position = 0
+    passed_go = p.move(4, board_size)
+    assert passed_go is False
+    assert p.position == 4
