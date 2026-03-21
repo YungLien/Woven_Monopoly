@@ -138,3 +138,41 @@ def test_double_rent_applies_only_when_full_colour_set_owned():
     assert players["Peter"]["money"] == 16  # after buying PropY and receiving double rent
     assert players["Billy"]["position"] == "PropX"
     assert players["Billy"]["money"] == 7  # 17 - 10
+
+
+def test_immediate_stop_once_bankruptcy_occurs():
+    """If a player goes bankrupt, the game must stop immediately (no later turns processed)."""
+    # Board layout (4 spaces):
+    # 0: GO
+    # 1: PropX (red, price 8)
+    # 2: Neutral (non-property)
+    # 3: PropY (red, price 8)
+    # Rent is doubled only after the owner owns both PropX and PropY.
+    board = [
+        {"type": "go", "name": "GO"},
+        {"type": "property", "name": "PropX", "price": 8, "colour": "red"},
+        {"type": "neutral", "name": "Neutral"},
+        {"type": "property", "name": "PropY", "price": 8, "colour": "red"},
+    ]
+
+    # Turn order per roll: Peter, Billy, Charlotte, Sweedal, Peter, Billy...
+    # Rolls chosen so:
+    # - Peter buys PropX (roll=1)
+    # - Billy lands on PropX and pays rent once (roll=1)
+    # - Peter buys PropY (roll=2) to complete the red set
+    # - Billy later lands on PropX again with doubled rent and goes bankrupt (roll=4)
+    # - Extra rolls would move Charlotte/Sweedal if they were processed; we assert they are not.
+    rolls = [1, 1, 2, 2, 2, 4, 1, 1, 1, 1]
+
+    game = MonopolyGame(board, rolls)
+    result = game.play()
+    players = {p["name"]: p for p in result["players"]}
+
+    assert players["Billy"]["bankrupt"] is True
+
+    # Charlotte and Sweedal completed their turns before bankruptcy and should not be affected
+    # by later rolls.
+    assert players["Charlotte"]["money"] == 16
+    assert players["Charlotte"]["position"] == "Neutral"
+    assert players["Sweedal"]["money"] == 16
+    assert players["Sweedal"]["position"] == "Neutral"
