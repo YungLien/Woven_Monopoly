@@ -81,8 +81,8 @@ python -m pytest -q
 - Mandatory purchase behavior and no duplicate purchase on owned property
 - Rent transfer correctness
 - Double-rent behavior only when full colour set is owned
-- Immediate game stop once bankruptcy occurs
-- Explicit no self-rent path when landing on your own property
+- Immediate game stop once bankruptcy occurs(tested via `test_immediate_stop_once_bankruptcy_occurs`)
+- Self-owned-property behavior (no self-rent) is covered via `test_buy_property_must_buy_once_only`)
 
 ## Expected Results
 
