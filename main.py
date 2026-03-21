@@ -1,5 +1,3 @@
-import json
-from collections import defaultdict
 
 # -----------------------------
 # Models
@@ -179,10 +177,7 @@ def test_game_2_results():
 # Utility functions
 # -----------------------------
 
-def load_json(path):
-    """Load and return JSON data from a file path."""
-    with open(path, "r") as f:
-        return json.load(f)
+
 
 
 # -----------------------------
