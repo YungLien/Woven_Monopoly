@@ -1,38 +1,4 @@
-
-# -----------------------------
-# Models
-# -----------------------------
-
-class Property:
-    """Represents a property on the board with price, colour, and ownership."""
-
-    def __init__(self, name, price, colour):
-        """Initialise a property with name, price, and colour group."""
-        self.name = name
-        self.price = price
-        self.colour = colour
-        self.owner = None
-
-
-class Player:
-    """Represents a player in the game including position, money, and owned properties."""
-
-    def __init__(self, name):
-        """Initialise a player with starting money, position, and empty property list."""
-        self.name = name
-        self.money = 16
-        self.position = 0
-        self.properties = []
-        self.bankrupt = False
-
-    def move(self, steps, board_size):
-        """Move the player forward by a number of steps and return whether GO was passed."""
-        prev_position = self.position
-        self.position = (self.position + steps) % board_size
-        passed_go = (prev_position + steps) >= board_size
-        return passed_go
-
-
+from utils import load_json
 # -----------------------------
 # Game Engine
 # -----------------------------
