@@ -110,7 +110,6 @@ python -m pytest -q
 
 ## Future Improvements
 
-- Introduce a `Space` base class to remove runtime type checks
 - Add more Monopoly mechanics (chance cards, jail, auctions)
 - Parameterize players and starting money for easier scenario variation
 - Add richer CLI options and logging output
