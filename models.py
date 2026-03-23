@@ -1,8 +1,19 @@
-class Property:
+class Space:
+    """Base class for all board spaces."""
+
+    def __init__(self, name):
+        self.name = name
+
+
+class GoSpace(Space):
+    """Represents the GO space on the board."""
+    pass
+
+class Property(Space):
     """Represents a property on the board with price, colour, and ownership."""
 
     def __init__(self, name, price, colour):
-        self.name = name
+        super().__init__(name)
         self.price = price
         self.colour = colour
         self.owner = None
