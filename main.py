@@ -1,8 +1,5 @@
 from game_engine import MonopolyGame
 from utils import load_json
-# -----------------------------
-# Main execution
-# -----------------------------
 
 def run_game(board_path, rolls_path):
     """Run a single game simulation and print the results."""

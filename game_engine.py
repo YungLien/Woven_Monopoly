@@ -1,4 +1,4 @@
-from models import Player, Property
+from models import Player, Property, Space, GoSpace
 
 class MonopolyGame:
     """Main game engine that handles game setup, turns, and rule execution."""
@@ -15,13 +15,15 @@ class MonopolyGame:
         self.current_turn = 0
 
     def _load_board(self, board_data):
-        """Convert raw JSON board data into Property objects or keep special tiles."""
+        """Convert raw JSON board data into typed Space objects."""
         board = []
         for space in board_data:
             if space["type"] == "property":
                 board.append(Property(space["name"], space["price"], space["colour"]))
+            elif space["type"] == "go":
+                board.append(GoSpace(space["name"]))
             else:
-                board.append(space)
+                board.append(Space(space["name"]))
         return board
 
     def _owns_full_colour_set(self, player, colour):
@@ -86,7 +88,7 @@ class MonopolyGame:
 
         for p in self.players:
             space = self.board[p.position]
-            space_name = space.name if isinstance(space, Property) else space["name"]
+            space_name = space.name
             results["players"].append(
                 {
                     "name": p.name,
